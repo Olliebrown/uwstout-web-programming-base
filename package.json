@@ -1,0 +1,13 @@
+{
+  "name": "uwstout-webproject-base",
+  "version": "0.0.1",
+  "description": "A base configuration for web programming projects in the CS 248 course at UW Stout.",
+  "author": "Seth Berrier",
+  "license": "MIT",
+  "dependencies": {
+    "eslint": "^3.19.0",
+    "grunt": "^1.0.1",
+    "grunt-browser-sync": "^2.2.0",
+    "grunt-php": "^1.5.1"
+  }
+}

@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = function(grunt) {
   grunt.initConfig({
 
@@ -10,7 +12,7 @@ module.exports = function(grunt) {
           hostname: '127.0.0.1', port: 3002,
 
           // Serve all files under the 'public' directory
-          base: 'public/',
+          base: path.resolve(__dirname, 'public/'),
 
           // Do NOT open the server index page in a browser when the server starts
           // (we want to open the one proxied by browsersync instead)

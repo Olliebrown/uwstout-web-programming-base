@@ -3,6 +3,30 @@ const path = require('path');
 module.exports = function(grunt) {
   grunt.initConfig({
 
+    // Translate SASS to CSS using node-sass (a native sass compiler)
+    sass: {
+      options: {
+        // Set the output to be very human readable
+        // (change to 'compressed' for a minimized file)
+        outputStyle: 'expanded'
+      },
+  		dist: {
+        // Will translate index.scss in the scss folder only
+        // - generates public/index.css
+  			files: {
+  				'public/index.css': 'scss/index.scss'
+  			}
+  		}
+  	},
+
+    // Task to watch files in the 'scss' directory and trigger sass when they change
+    watch: {
+			css: {
+				files: 'scss/*.scss',
+				tasks: ['sass']
+			}
+		},
+
     // Basic PHP server provided by PHP 5
     php: {
       server: {
@@ -30,6 +54,10 @@ module.exports = function(grunt) {
   			},
 
   			options: {
+          // Let browsersync know that there is also a watch task that it shuld run
+          // (without this, the Sass files would not get automatically translated)
+          watchTask: true,
+
           // The server that should be proxied.  All requests are forwarded
           // to and from this server with the browser sync stuff injected.
   				proxy: '<%= php.server.options.hostname %>:<%= php.server.options.port %>',
@@ -56,7 +84,9 @@ module.exports = function(grunt) {
   // Load these grunt task managers as standard NPM packages (configured above)
   grunt.loadNpmTasks('grunt-php');
   grunt.loadNpmTasks('grunt-browser-sync');
+  grunt.loadNpmTasks('grunt-sass');
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
   // Register default task to run both configured servers
-  grunt.registerTask('default', ['php', 'browserSync']);
+  grunt.registerTask('default', ['sass', 'php', 'browserSync', 'watch']);
 };

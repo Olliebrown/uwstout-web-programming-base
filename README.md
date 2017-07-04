@@ -1,7 +1,7 @@
 UW Stout Web Programming Course: HTML/JS/PHP Project Base
 =========================================================
 
-This project provides a base framework for running a local PHP capable server on your computer.  It will serve all the files located in the 'public' directory and automatically refresh any browser viewing those files as you change them.  It is meant to mimic the behavior of a real server without the complexity of installing something like apache, nginx, iis, or some other LMAP/WAMP solution.
+This project provides a base framework for running a local PHP capable server on your computer.  It will serve all the files located in the 'public' directory and automatically refresh any browser viewing those files as you change them.  It will also monitor the file 'scss/index.scss' and translate it from SCSS to CSS when it is saved.  It is primarily meant to mimic the behavior of a real server without the complexity of installing something like apache, nginx, iis, or some other LMAP/WAMP solution.  It also helps support a modern web programming development environment and modern technologies (like node, SASS, and some of ECMA2015).
 
 Prerequisites
 -------------
@@ -25,5 +25,6 @@ This project uses the following technologies:
 - node and npm to maintain all dependencies (except PHP)
 - grunt to spin up the server, launch browsersync, and monitor files.
 - Browsersync to refresh the browser and syncronize multiple browser senssions.
+- node-sass (via grunt-sass) to compile SCSS files to their CSS equivalent.
 
 Default configurations are provided for eslint and it is automatically installed when you run 'npm install'. If you use the eslint package for Atom it will automatically lint your JavaScript code as you type.

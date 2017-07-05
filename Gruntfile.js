@@ -14,7 +14,7 @@ module.exports = function(grunt) {
         // Will translate index.scss in the scss folder only
         // - generates public/index.css
   			files: {
-  				'public/index.css': 'scss/index.scss'
+  				'public/sassStyle.css': 'scss/sassStyle.scss'
   			}
   		}
   	},

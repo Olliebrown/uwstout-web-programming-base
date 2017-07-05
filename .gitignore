@@ -6,7 +6,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # Generated file
-public/index.css
+public/sassStyle.css
 
 # Runtime data
 pids

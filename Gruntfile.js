@@ -40,7 +40,15 @@ module.exports = function(grunt) {
 
           // Do NOT open the server index page in a browser when the server starts
           // (we want to open the one proxied by browsersync instead)
-          open: false
+          open: false,
+
+          // Extra php.ini configuraiton options to make it behave more like a
+          // normal php server.
+          directives: {
+            error_reporting: 'E_ERROR | E_WARNING | E_PARSE | E_NOTICE | E_STRICT',
+            display_errors: '0',
+            'cli_server.color': '1'
+          }
         }
       }
     },

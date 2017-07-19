@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <?php
-    // Print $DATA as an array (leave $PARENT empty)
+    // Print $DATA as an array ($PARENT is an optional string label)
     // Note: Will recurse into any values that are also arrays
     function printValues($DATA, $PARENT = "") {
       // Loop over all key-value pairs
@@ -17,21 +17,21 @@
         // If this is an array, need to recurse into it
         if(is_array($value)) {
 
-          // was parent specified (i.e. is this already a recursive call)
+          // was parent specified (e.g. are we already inside something)
           if(empty($PARENT)) {
             // Recurse on this value and give key as the parent
             printValues($value, $key);
           } else {
             // recurse on this value and indicate parent as well as key
-            printValues($value, $PARENT . "[" . $key . "]");
+            printValues($value, $PARENT . "['" . $key . "']");
           }
         } else {
 
-          // Is parent specified (e.g. is this a recursive call)
+          // Is parent specified (e.g. are we already inside something)
           if(empty($PARENT)) {
             echo "             <tr><td>$key</td><td>$value</td></tr>\n";
           } else {
-            echo "             <tr><td>".$PARENT."[".$key."]</td><td>$value</td></tr>\n";
+            echo "             <tr><td>".$PARENT."['".$key."']</td><td>$value</td></tr>\n";
           }
         }
       }
@@ -61,7 +61,7 @@
             <table class="table table-striped">
               <thead><tr><th>Key</th><th>Value</th>
               <tbody>
-                <?php printValues($_REQUEST); ?>
+                <?php printValues($_REQUEST, '$_REQUEST'); ?>
               </tbody>
             </table>
           </div>
@@ -72,7 +72,7 @@
             <table class="table table-striped">
               <thead><tr><th>Key</th><th>Value</th>
               <tbody>
-                <?php printValues($_POST); ?>
+                <?php printValues($_POST, '$_POST'); ?>
               </tbody>
             </table>
           </div>
@@ -83,7 +83,7 @@
               <table class="table table-striped">
               <thead><tr><th>Key</th><th>Value</th>
               <tbody>
-                <?php printValues($_GET); ?>
+                <?php printValues($_GET, '$_GET'); ?>
               </tbody>
             </table>
           </div>
@@ -94,7 +94,7 @@
               <table class="table table-striped">
               <thead><tr><th>Key</th><th>Value</th>
               <tbody>
-                <?php printValues($_COOKIE); ?>
+                <?php printValues($_COOKIE, '$_COOKIE'); ?>
               </tbody>
             </table>
           </div>

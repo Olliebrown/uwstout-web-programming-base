@@ -1,3 +1,4 @@
+const sass = require('node-sass');
 const path = require('path');
 
 module.exports = function(grunt) {
@@ -6,6 +7,8 @@ module.exports = function(grunt) {
     // Translate SASS to CSS using node-sass (a native sass compiler)
     sass: {
       options: {
+        // Pass in the sass parser to use
+        implementation: sass,
         // Set the output to be very human readable
         // (change to 'compressed' for a minimized file)
         outputStyle: 'expanded'

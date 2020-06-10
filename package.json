@@ -1,17 +1,35 @@
 {
   "name": "uwstout-webproject-base",
-  "version": "0.0.1",
-  "description": "A base configuration for web programming projects in the CS 248 course at UW Stout.",
+  "version": "1.0.0",
+  "description": "A base configuration for web and Internet programming projects in the CS 248 course at UW Stout.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Olliebrown/uwstout-web-programming-base.git"
+  },
+  "keywords": [
+    "web",
+    "programming",
+    "local",
+    "server",
+    "example",
+    "testing"
+  ],
   "author": "Seth Berrier",
   "license": "MIT",
-  "dependencies": {
-    "eslint": "^3.19.0",
-    "grunt": "^1.0.1",
-    "grunt-browser-sync": "^2.2.0",
-    "grunt-php": "^1.5.1"
+  "bugs": {
+    "url": "https://github.com/Olliebrown/uwstout-web-programming-base/issues"
   },
-  "devDependencies": {
-    "grunt-contrib-watch": "^1.0.0",
-    "grunt-sass": "^2.0.0"
+  "homepage": "https://github.com/Olliebrown/uwstout-web-programming-base#readme",
+  "dependencies": {
+    "grunt": "^1.1.0",
+    "grunt-browser-sync": "^2.2.0",
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-php": "^3.0.0",
+    "grunt-sass": "^3.1.0",
+    "node-sass": "^4.14.1"
   }
 }

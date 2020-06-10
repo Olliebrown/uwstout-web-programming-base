@@ -7,9 +7,9 @@ Prerequisites
 -------------
 To use this project you must have the following installed:
 - Node and npm
-- grunt (installed globally)
+- grunt and eslint (installed globally)
 - PHP v7 (even if you aren't using php)
-- HIGHLY RECOMMENDED: Visual Studio Code
+- HIGHLY RECOMMENDED: Visual Studio Code and Git for Windows
 
 Installing
 ----------
@@ -18,7 +18,8 @@ Installing
 2. Run the web platform installer, search for PHP 7.4 and install.
 3. Download and install the LTS version of node.js (https://nodejs.org/en/download/)
 4. Open a bash terminal (in windows, right click any folder and select 'git bash here')
-5. run `npm install -g grunt-cli eslint` to install both grunt and eslint 
+5. run `npm install -g grunt-cli eslint` to install both grunt and eslint globally
+- If you are on Unix/MacOS you may need to append `sudo` to the above command
 
 One Time Setup
 --------------
@@ -31,8 +32,10 @@ Once you have the prerequisites installed, the project can be setup locally as f
 Development and Usage
 ---------------------
 To work on a project, and make changes:
-1. Open a terminal in the project directory (or open it in VS code and bring up the terminal)
-2. at the command line, run `grunt` to start monitoring files and running a local server
+1. Open the folder in your favorite editor (VS code recommended)
+2. Get a command prompt (either via a built in terminal in your editor or git bash)
+3. At the terminal command prompt, run `grunt` to start monitoring files and running a local server
+4. When you are all done, press 'CTRL+C' at the command prompt to stop the server.
 
 The standard php server is used to serve the pages on port 3002. This server is proxied through browsersync on port 3000 which is automatically opened in your default browser. Any time you save changes to any files under 'public', the browser will automatically refresh (using some JavaScript/Web Sockets magic).  Also, if you open the web page in multiple browsers they will all stay in sync. Input is automatically mimicked on the other browsers (again, web sockets magic).
 

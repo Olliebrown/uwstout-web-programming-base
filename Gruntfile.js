@@ -88,6 +88,27 @@ module.exports = function (grunt) {
             scroll: true,
             links: true,
             forms: true
+          },
+
+          // Register any callbacks for browsersync
+          callbacks: {
+            // This callback runs when the BS instance is finished initializing
+            ready: function (err, bs) {
+              // Handle any init error received
+              if (err) {
+                console.error('ERROR: Browsersync failed to initialize')
+                console.error(err)
+                process.exit(1)
+              }
+
+              // If Browsersync bound to a different port, that means it
+              // is likely already running so don't start another one.
+              if (bs.options.get('port') !== 3000) {
+                console.error('ERROR: Port 3000 not available. Is your local server already running?')
+                console.error('Please kill any process named \'node\' in your task manager and try again.')
+                process.exit(1)
+              }
+            }
           }
         }
       }

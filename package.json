@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/Olliebrown/uwstout-web-programming-base#readme",
   "dependencies": {
-    "grunt": "^1.1.0",
+    "grunt": "^1.5.2",
     "grunt-browser-sync": "^2.2.0",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-php": "^3.0.0",

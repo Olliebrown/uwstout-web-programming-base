@@ -1,5 +1,6 @@
 /* Place any manually written CSS here */
 /* Note: You can also generate CSS from SCSS (see 'scss/sassStyle.scss') */
 .subtitle {
-    color: #a8a8a8;
+  color: #a8a8a8;
+  font-size: 2.0rem;
 }

@@ -17,6 +17,9 @@ const DB_PORT = process.env.DB_PORT ?? '3306'
 const DB_USER = process.env.DB_USER ?? 'unknown'
 const DB_PASSWORD = process.env.DB_PASSWORD ?? 'badpass'
 
+// Username for the new database user
+const NEW_USERNAME = 'webUser'
+
 // Read the SQL files
 const simpsonsSQL = fs.readFileSync('./database/simpsonsCreate.sql', { encoding: 'utf8' })
 const littleIMDBSQL = fs.readFileSync('./database/littleIMDBCreate.sql', { encoding: 'utf8' })
@@ -92,9 +95,7 @@ async function testDatabase () {
   // Create connection pool
   console.log('\nCreating connection pool with the following credentials ...')
   console.log('============================================')
-  console.log({
-    DB_HOST, DB_PORT, DB_USER, DB_PASSWORD: '********'
-  })
+  console.log({ DB_HOST, DB_PORT, DB_USER, DB_PASSWORD: '********' })
   const pool = createPool()
   console.log('============================================')
 
@@ -105,14 +106,13 @@ async function testDatabase () {
     console.log('  --> Connection succeeded')
 
     // Create the default web user
-    {
-      console.log('\nCreating new web database user')
-      const newPW = crypto.randomUUID()
-      console.log('============================================')
-      const result = await createDatabaseUser(conn, 'webUser', newPW, ['simpsons', 'myflix', 'tinyimdb'])
-      console.log('============================================')
-      console.log(`  --> Creation/update ${result ? 'succeeded' : 'failed'}`)
-    }
+    let userCreated = false
+    const newPW = crypto.randomUUID()
+    console.log('\nCreating new web database user')
+    console.log('============================================')
+    userCreated = await createDatabaseUser(conn, NEW_USERNAME, newPW, ['simpsons', 'myflix', 'tinyimdb'])
+    console.log('============================================')
+    console.log(`  --> Creation/update ${userCreated ? 'succeeded' : 'failed'}`)
 
     // Sync the example databases
     {
@@ -141,12 +141,22 @@ async function testDatabase () {
 
     // Close the connection
     conn.release()
+
+    // Output connection data
+    if (userCreated) {
+      fs.writeFileSync('./dbUser.txt', `username=${NEW_USERNAME}\npassword=${newPW}`)
+      console.log('\n**************************************************')
+      console.log('Here are your connection details (COPY THESE!)')
+      console.log('    Username:', NEW_USERNAME)
+      console.log('    Password:', newPW)
+      console.log('(these are also saved in dbUser.txt)')
+      console.log('**************************************************')
+    }
   } else {
     console.log('  --> Connection failed')
   }
 
   // Close connection pool
-  console.log('Closing connection pool ...')
   await pool.end()
 }
 

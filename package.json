@@ -9,7 +9,7 @@
     "client": "node bundle.js",
     "client:dev": "node bundle.js dev",
     "clientServer:dev": "node bundle.js dev server",
-    "db:test": "node database/databasic.js",
+    "db:create": "node database/databasic.js",
     "server": "php -S localhost:3000 -t public/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

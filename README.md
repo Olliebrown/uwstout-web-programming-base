@@ -12,7 +12,7 @@ To use this project you must have the following installed:
 Install Prerequisites
 ---------------------
 0. RECOMMENDED FOR WINDOWS: Download and install git for windows to get Bash (https://gitforwindows.org/)
-1. Download and install PHP v8 (https://windows.php.net/downloads/releases/php-8.2.7-Win32-vs16-x64.zip)
+1. Download and install PHP v8 ([https://windows.php.net/downloads/releases/php-8.2.7-Win32-vs16-x64.zip](https://windows.php.net/downloads/releases/latest/php-8.2-Win32-vs16-x64-latest.zip))
     - Need to extract the zip file to a folder and add that folder to your PATH environment variable.
 3. Download and install the LTS version of node.js (https://nodejs.org/en/download/)
 

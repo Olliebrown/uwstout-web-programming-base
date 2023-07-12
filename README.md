@@ -32,13 +32,19 @@ To work on a project:
 
 If you do not require PHP support:
 
-3. At the terminal command prompt, run `npm run client:dev` to start monitoring files and serving the pages.
+3. At the terminal command prompt, run `npm run clientServer:dev` to start monitoring files and serving the pages.
 4. Open a browser and go to http://localhost:3000/ to view the pages contained in the 'public' directory.
+
+If you do not require PHP support AND you don't need a server:
+
+3. At the terminal command prompt, run `npm run client:dev` to start monitoring files and rebuilding them when you save.
+4. You will need to serve the public directory on your own
 
 If you DO need PHP support:
 
 3. At the terminal command prompt, run `npm run server` to serve files from the 'public' directory using PHP.
 4. Open a browser and go to http://localhost:3000/ to view the pages contained in the 'public' directory.
+5. If you also want to monitor and regen the client files, open another terminal and run `npm run client:dev`
 
 Technologies
 ------------

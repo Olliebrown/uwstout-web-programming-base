@@ -12,7 +12,7 @@ To use this project you must have the following installed:
 Install Prerequisites
 ---------------------
 0. RECOMMENDED FOR WINDOWS: Download and install git for windows to get Bash (https://gitforwindows.org/)
-1. Download and install PHP v8 (https://windows.php.net/downloads/releases/php-8.2.7-Win32-vs16-x64.zip)
+1. Download and install PHP v8 ([https://windows.php.net/downloads/releases/php-8.2.7-Win32-vs16-x64.zip](https://windows.php.net/downloads/releases/latest/php-8.2-Win32-vs16-x64-latest.zip))
     - Need to extract the zip file to a folder and add that folder to your PATH environment variable.
 3. Download and install the LTS version of node.js (https://nodejs.org/en/download/)
 
@@ -32,13 +32,19 @@ To work on a project:
 
 If you do not require PHP support:
 
-3. At the terminal command prompt, run `npm run client:dev` to start monitoring files and serving the pages.
+3. At the terminal command prompt, run `npm run clientServer:dev` to start monitoring files and serving the pages.
 4. Open a browser and go to http://localhost:3000/ to view the pages contained in the 'public' directory.
+
+If you do not require PHP support AND you don't need a server:
+
+3. At the terminal command prompt, run `npm run client:dev` to start monitoring files and rebuilding them when you save.
+4. You will need to serve the public directory on your own
 
 If you DO need PHP support:
 
 3. At the terminal command prompt, run `npm run server` to serve files from the 'public' directory using PHP.
 4. Open a browser and go to http://localhost:3000/ to view the pages contained in the 'public' directory.
+5. If you also want to monitor and regen the client files, open another terminal and run `npm run client:dev`
 
 Technologies
 ------------

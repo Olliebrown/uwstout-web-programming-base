@@ -20,9 +20,22 @@ const DB_PASSWORD = process.env.DB_PASSWORD ?? 'badpass'
 // Username for the new database user
 const NEW_USERNAME = 'webUser'
 
+// Tables in the littleIMDB database
+const IMDB_TABLES = [
+  'movie',
+  'actor-1', 'actor-2', 'actor-3', 'actor-4',
+  'crew',
+  'genres',
+  'movies_actors-1', 'movies_actors-2', 'movies_actors-3', 'movies_actors-4', 'movies_actors-5',
+  'movies_crew',
+  'crew_genres-1', 'crew_genres-2'
+]
+
 // Read the SQL files
 const simpsonsSQL = fs.readFileSync('./database/simpsonsCreate.sql', { encoding: 'utf8' })
-const littleIMDBSQL = fs.readFileSync('./database/littleIMDBCreate.sql', { encoding: 'utf8' })
+const littleIMDBSQL = IMDB_TABLES.map(tableName =>
+  fs.readFileSync(`./database/littleIMDB/${tableName}.sql`, { encoding: 'utf8' })
+)
 const myflixSQL = fs.readFileSync('./database/myflixCreate.sql', { encoding: 'utf8' })
 
 // Setup a pooled DB connection
@@ -123,10 +136,12 @@ async function testDatabase () {
       console.log(`  --> Creation/update ${result ? 'succeeded' : 'failed'}`)
     }
 
-    {
-      console.log('\nCreating/updating example database "littleIMDB"')
+    console.log('\nCreating/updating example database "littleIMDB"')
+    for (let i = 0; i < IMDB_TABLES.length; i++) {
+      const tableName = IMDB_TABLES[i]
+      console.log(`  --> Creating "${tableName}" table`)
       console.log('============================================')
-      const result = await runMultilineQuery(conn, littleIMDBSQL)
+      const result = await runMultilineQuery(conn, littleIMDBSQL[i])
       console.log('============================================')
       console.log(`  --> Creation/update ${result ? 'succeeded' : 'failed'}`)
     }

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CS-248: The Little IMDB</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <!-- Our Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="sticky-top w-100">
+        <div class="float-end pt-2">
+          <i class="bi bi-moon-stars align-middle"></i>
+          <div class="form-check form-check-inline form-switch mx-2 align-middle">
+            <input class="form-check-input" type="checkbox" role="switch" id="themeSwitch">
+          </div>
+          <i class="bi bi-brightness-high align-middle" style="margin-left: -10px;"></i>
+        </div>
+      </div>
+
+      <!-- This duplicates the page-header from Bootstrap 3 (but in bootstrap 4+) -->
+      <header class="pb-2 mt-4 mb-2 border-bottom">
+        <h1 class="display-2">
+          CS-248 - The Little IMDB
+          <small class="subtitle">Database of every best picture nominee</small>
+        </h1>
+      </header>
+
+      <section>
+        <h2 class="display-4 mt-2 pb-4 mb-4">Query Database</h2>
+
+        <form id="queryForm">
+          <div class='row'>
+            <div class='col-lg-6 text-center' style="margin-bottom: 10px;">
+              <img src='images/littleIMDB.png' width="550" />
+            </div>
+            <div class='col-lg-6' style="margin-bottom: 10px;">
+              <label for='sql'>Little IMDB v4 Query:</label>
+              <textarea class='form-control' name='sqlText' id='sqlText' rows='7' spellcheck="false" data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false" required>SELECT title, plot, year, contentRating FROM movie;</textarea>
+            </div>
+          </div>
+
+          <div class='row' style="margin-top: 5px;">
+            <div class='col-lg-6'>
+            </div>
+            <div class='col-lg-6'>
+              <button id='resetQuery' type='reset' class='btn btn-warning' style='min-width: 200px;'>Reset Form</button>
+              <button id='submitQuery' type='submit' class='btn btn-primary float-end' style='min-width: 200px;'>Submit Query</button>
+            </div>
+          </div>
+
+        </form>
+      </section>
+
+      <section>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="infoTab" data-bs-toggle="tab" data-bs-target="#infoTabPane" type="button" role="tab" aria-controls="infoTabPane" aria-selected="true">Database Info</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="resultsTab" data-bs-toggle="tab" data-bs-target="#resultsTabPane" type="button" role="tab" aria-controls="resultsTabPane" aria-selected="false">Query Results</button>
+          </li>
+        </ul>
+
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active" id="infoTabPane" role="tabpanel" aria-labelledby="infoTab" tabindex="0">
+            <h2 class="display-4 mt-2 pb-4 mb-4">Little IMDB: Database Structure</h2>
+            <table class='table table-striped'>
+              <thead>
+                <tr><th>Table Names</th><th>Fields (columns)</th>
+                    <th>References</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>movie</td>
+                  <td>id, title, year, plot, contentRating, imdbRating</td>
+                  <td>na</td>
+                </tr>
+                <tr>
+                  <td>genre</td>
+                  <td>movie_id, genre</td>
+                  <td>movie_id references movie.id</td>
+                </tr>
+                <tr>
+                  <td>actor</td>
+                  <td>id, name, nicknames, namePrefix, nameFirst, nameMiddle, nameLast, nameSuffix,
+                    nameNickname, height, birthName, birthDateTime, birthPlace, deathCause, deathDateTime,
+                    deathPlace, bio</td>
+                  <td>na</td>
+                </tr>
+                <tr>
+                  <td>crew</td>
+                  <td>id, name, nicknames, namePrefix, nameFirst, nameMiddle, nameLast, nameSuffix,
+                    nameNickname, height, birthName, birthDateTime, birthPlace, deathCause, deathDateTime,
+                    deathPlace, bio</td>
+                  <td>na</td>
+                </tr>
+                <tr>
+                  <td>movies_actors</td>
+                  <td>movie_id, actor_id, role</td>
+                  <td>movie_id references movie.id, actor_id references actor.id</td>
+                </tr>
+                <tr>
+                  <td>movies_crew</td>
+                  <td>movie_id, crew_id, job, title</td>
+                  <td>movie_id references movie.id, crew_id references crew.id</td>
+                </tr>
+                <tr>
+                  <td>crew_genres</td>
+                  <td>movie_id, crew_id, genre</td>
+                  <td>movie_id references movie.id, crew_id references crew.id</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <p>This is a database of movies containing every film ever nominated for best picture
+               in the history of the academy awards and the actors and crew the worked on them. The
+               database was populated with information from IMDB.com. This database is being served
+               by a local machine at Stout running in a virtual environment shared with other
+               classes. It is not high-performance and will struggle if you overwhelm it! Please
+               only use the database to complete your assignment.  Try to avoid unnecessarily large
+               queries or LIMIT queries that could potentially be large.</p>
+
+            <p><strong>WARNING</strong> the 'movies-actors', 'genre', and 'crew-genres' tables are
+               VERY large (10k to 30k rows) and if you request all rows expect to wait a VERY LONG
+               time to see the results.</p>
+          </div>
+
+          <div class="tabPane fade" id="resultsTabPane" role="tabpanel" aria-labelledby="resultsTab" tabindex="0">
+            <h2 class="display-4 mt-2 pb-4 mb-4">Little IMDB: Query Results</h2>
+            <table class="table table-striped table-hover" id="queryResultsTable">
+              <thead><tr><th>Results will go here</th></tr></thead>
+              <tbody><tr><td>Please run a query first</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <footer class="border-top mt-4 pt-2">
+        <p>For CS 248 at UW Stout | &copy; 2023 Seth Berrier</p>
+      </footer>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script src="js/littleIMDBsql.js" type="module"></script>
+  </body>
+</html>

@@ -123,7 +123,7 @@ async function testDatabase () {
     const newPW = crypto.randomUUID()
     console.log('\nCreating new web database user')
     console.log('============================================')
-    userCreated = await createDatabaseUser(conn, NEW_USERNAME, newPW, ['simpsons', 'myflix', 'tinyimdb'])
+    userCreated = await createDatabaseUser(conn, NEW_USERNAME, newPW, ['simpsons', 'myflix', 'littleIMDB'])
     console.log('============================================')
     console.log(`  --> Creation/update ${userCreated ? 'succeeded' : 'failed'}`)
 

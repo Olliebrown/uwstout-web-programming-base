@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CS-248: Simpsons Database</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <!-- Our Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="sticky-top w-100">
+        <div class="float-end pt-2">
+          <i class="bi bi-moon-stars align-middle"></i>
+          <div class="form-check form-check-inline form-switch mx-2 align-middle">
+            <input class="form-check-input" type="checkbox" role="switch" id="themeSwitch">
+          </div>
+          <i class="bi bi-brightness-high align-middle" style="margin-left: -10px;"></i>
+        </div>
+      </div>
+
+      <!-- This duplicates the page-header from Bootstrap 3 (but in bootstrap 4+) -->
+      <header class="pb-2 mt-4 mb-2 border-bottom">
+        <h1 class="display-2">
+          CS-248: Simpsons Database
+          <small class="subtitle">Database of characters from The Simpsons</small>
+        </h1>
+      </header>
+
+      <section>
+        <h2 class="display-4 mt-2 pb-4 mb-4">Query Database</h2>
+
+        <form id="queryForm">
+          <div class='row'>
+            <div class='col-lg-6 text-center' style="margin-bottom: 10px;">
+              <img src='images/simpsons.png' width="550" />
+            </div>
+            <div class='col-lg-6' style="margin-bottom: 10px;">
+              <label for='sql'>Simpsons Database Query:</label>
+              <textarea class='form-control' name='sqlText' id='sqlText' rows='7' spellcheck="false" data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false" required>SELECT * FROM students;</textarea>
+            </div>
+          </div>
+
+          <div class='row' style="margin-top: 5px;">
+            <div class='col-lg-6'>
+            </div>
+            <div class='col-lg-6'>
+              <button id='resetQuery' type='reset' class='btn btn-warning' style='min-width: 200px;'>Reset Form</button>
+              <button id='submitQuery' type='submit' class='btn btn-primary float-end' style='min-width: 200px;'>Submit Query</button>
+            </div>
+          </div>
+
+        </form>
+      </section>
+
+      <section>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="infoTab" data-bs-toggle="tab" data-bs-target="#infoTabPane" type="button" role="tab" aria-controls="infoTabPane" aria-selected="true">Database Info</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="resultsTab" data-bs-toggle="tab" data-bs-target="#resultsTabPane" type="button" role="tab" aria-controls="resultsTabPane" aria-selected="false">Query Results</button>
+          </li>
+        </ul>
+
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active" id="infoTabPane" role="tabpanel" aria-labelledby="infoTab" tabindex="0">
+            <h2 class="display-4 mt-2 pb-4 mb-4">Simpsons: Database Structure</h2>
+            <table class='table table-striped'>
+              <thead>
+                <tr><th>Table Names</th><th>Fields (columns)</th>
+                    <th>References</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>students</td><td>id, name, email, password</td><td>na</td></tr>
+                <tr><td>teachers</td><td>id, name</td><td>na</td></tr>
+                <tr><td>courses</td><td>id, name, teacher_id</td>
+                    <td>teacher_id references teachers.id</td></tr>
+                <tr><td>grades</td><td>student_id, course_id, grade</td>
+                    <td>student_id references students.id, course_id references courses.id</td></tr>
+              </tbody>
+            </table>
+
+            <p>This database is largely based on an example from "Web Programming Step by Step" by Stepp, Miller and Kirst</p>
+            <p>More information available here:
+              <a href='http://www.webstepbook.com/supplements.shtml' target='_blank'>
+                www.webstepbook.com/supplements.shtml
+              </a>
+            </p>
+          </div>
+
+          <div class="tabPane fade" id="resultsTabPane" role="tabpanel" aria-labelledby="resultsTab" tabindex="0">
+            <h2 class="display-4 mt-2 pb-4 mb-4">Simpsons DB: Query Results</h2>
+            <table class="table table-striped table-hover" id="queryResultsTable">
+              <thead><tr><th>Results will go here</th></tr></thead>
+              <tbody><tr><td>Please run a query first</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <footer class="border-top mt-4 pt-2">
+        <p>For CS 248 at UW Stout | &copy; 2023 Seth Berrier</p>
+      </footer>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script src="js/simpsonsDBsql.js" type="module"></script>
+  </body>
+</html>

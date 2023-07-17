@@ -5,7 +5,7 @@ abstract class DBDeets {
   const DB_NAME_LITTLEIMDB = 'littleIMDB';
   const DB_NAME_SIMPSONS = 'simpsons';
   const DB_USER = 'webUser';
-  const DB_PW = '1c4cf87b-7bfa-415a-8d09-8476a378ae66';
+  const DB_PW = 'REPLACE_WITH_YOUR_PASSWORD';
 }
 
 // Connect to a MySQL style database using mysqli

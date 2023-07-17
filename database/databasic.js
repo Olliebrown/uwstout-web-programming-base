@@ -69,7 +69,7 @@ async function createDatabaseUser (conn, username, password, databases) {
 
   try {
     const result = await conn.query(`
-      DROP USER '${username}'@'localhost';
+      DROP USER IF EXISTS '${username}'@'localhost';
       CREATE USER '${username}'@'localhost' IDENTIFIED BY '${password}';
       ${databases.map(database => `GRANT SELECT ON ${database}.* TO '${username}'@'localhost'; FLUSH PRIVILEGES;`).join('\n')}
     `)

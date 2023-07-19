@@ -3,6 +3,8 @@ import crypto from 'crypto'
 import mariaDB from 'mariadb'
 import dotenv from 'dotenv'
 
+import phpMysqliConfigure from './phpConfigure.js'
+
 // Make sure a .env file exists
 if (!fs.existsSync('./.env')) {
   console.error('ERROR: Could not find a ".env" file in your main folder.')
@@ -142,6 +144,13 @@ async function runMultilineQuery (conn, querySQL) {
 
 // Run a basic test of database functionality
 async function testDatabase () {
+  // Enabling mysqli extension
+  console.log('\nEnabling mysqli extension')
+  console.log('============================================')
+  const enabled = phpMysqliConfigure()
+  console.log('============================================')
+  console.log(`  --> ${enabled ? 'Enabled' : 'Failed to enable'}`)
+
   // Create connection pool
   console.log('\nCreating connection pool with the following credentials ...')
   console.log('============================================')

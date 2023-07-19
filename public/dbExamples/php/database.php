@@ -13,10 +13,10 @@ mysqli_report(MYSQLI_REPORT_OFF);
 
 // Connect to a MySQL style database using mysqli
 function connectToDatabase($databaseName) {
-  $db = new mysqli('localhost', DBDeets::DB_USER, DBDeets::DB_PW, $databaseName);
+  @$db = new mysqli('localhost', DBDeets::DB_USER, DBDeets::DB_PW, $databaseName);
 
   if ($db->connect_errno) {
-    die_json(500, "Failed to connect to database. Did you remember to install MariaDB and do 'npm run createDB'?", makeDBErrorInfo($db));
+    die_json(500, "Failed to connect to database. Did you remember to install MariaDB and do 'npm run createDB'? Did you remember to add the user password to database.php?", makeDBErrorInfo($db));
   }
 
   return $db;
@@ -68,9 +68,7 @@ function makeDBErrorInfo($db, $stmt = null) {
     if ($db->connect_errno) {
       $errorInfo['connectErrno'] = $db->connect_errno;
       $errorInfo['connectError'] = $db->connect_error;
-    }
-
-    if ($db->errno) {
+    } else if ($db->ping() && $db->errno) {
       $errorInfo['dbErrno'] = $db->errno;
       $errorInfo['dbError'] = $db->error;
     }

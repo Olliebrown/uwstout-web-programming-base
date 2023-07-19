@@ -80,14 +80,11 @@ async function checkUserExists (conn, username) {
 }
 
 // Create a user account on the server
-async function createDatabaseUser (conn, username, password, databases) {
-  if (!Array.isArray(databases)) { databases = [databases] }
-
+async function createDatabaseUser (conn, username, password) {
   try {
     const result = await conn.query(`
       DROP USER IF EXISTS '${username}'@'localhost';
       CREATE USER '${username}'@'localhost' IDENTIFIED BY '${password}';
-      ${databases.map(database => `GRANT SELECT ON ${database}.* TO '${username}'@'localhost'; FLUSH PRIVILEGES;`).join('\n')}
     `)
     result.forEach((packet, i) => {
       if (packet.warningStatus > 0) {
@@ -97,6 +94,27 @@ async function createDatabaseUser (conn, username, password, databases) {
     return true
   } catch (err) {
     console.error('Failed to create user')
+    console.error(err.message)
+    return false
+  }
+}
+
+async function setUserPermissions (conn, username, databases) {
+  if (!Array.isArray(databases)) { databases = [databases] }
+
+  try {
+    const result = await conn.query(`
+      ${databases.map(database => `GRANT SELECT ON ${database}.* TO '${username}'@'localhost'; FLUSH PRIVILEGES;`).join('\n')}
+    `)
+    result.forEach((packet, i) => {
+      if (packet.warningStatus > 0) {
+        console.log(`Command ${i + 1}: `, packet)
+      }
+    })
+
+    return true
+  } catch (err) {
+    console.error('Failed to set user permissions')
     console.error(err.message)
     return false
   }
@@ -168,13 +186,17 @@ async function testDatabase () {
     // Create the default web user
     let userCreated = false
     let newPW = ''
-    if (!(await checkUserExists(conn, NEW_USERNAME))) {
-      newPW = crypto.randomUUID()
-      console.log('\nCreating new web database user')
+    {
+      console.log('\nCreating new web database user and updating permissions')
       console.log('============================================')
-      userCreated = await createDatabaseUser(conn, NEW_USERNAME, newPW, ['simpsons', 'myflix', 'littleIMDB'])
+      if (!(await checkUserExists(conn, NEW_USERNAME))) {
+        newPW = crypto.randomUUID()
+        userCreated = await createDatabaseUser(conn, NEW_USERNAME, newPW)
+      }
+      const result = await setUserPermissions(conn, NEW_USERNAME, ['simpsons', 'myflix', 'littleIMDB', 'people'])
       console.log('============================================')
-      console.log(`  --> Creation/update ${userCreated ? 'succeeded' : 'failed'}`)
+      console.log(`  --> Creation ${userCreated ? 'succeeded' : 'skipped'}`)
+      console.log(`  --> Permission updates ${result ? 'succeeded' : 'failed'}`)
     }
 
     console.log('\nChecking database data ...')

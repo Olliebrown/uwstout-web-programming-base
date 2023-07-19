@@ -1,14 +1,16 @@
 /* global bootstrap */
 import { queryFormSubmit } from './queryTable.js'
 
-export function themeToggle () {
+export function themeToggle (onThemeChange) {
   const themeToggleElem = document.getElementById('themeSwitch')
   if (themeToggleElem) {
     themeToggleElem.addEventListener('click', () => {
       if (document.documentElement.getAttribute('data-bs-theme') === 'dark') {
         document.documentElement.setAttribute('data-bs-theme', 'light')
+        if (onThemeChange) { onThemeChange(false) }
       } else {
         document.documentElement.setAttribute('data-bs-theme', 'dark')
+        if (onThemeChange) { onThemeChange(true) }
       }
     })
   }
@@ -26,12 +28,9 @@ export function initTabs (tabContainerID = 'myTab') {
   })
 }
 
-export async function onSubmit (sqlTextId, database, tableId, resultsTabId) {
+export async function onSubmit (querySQL, database, tableId, resultsTabId) {
   // Disable buttons and show spinner
   const submitSpinner = disableForm()
-
-  // Get the SQL query from the form
-  const querySQL = document.getElementById(sqlTextId).value
 
   // Submit the query and show the results
   await queryFormSubmit(querySQL, database, tableId, resultsTabId)

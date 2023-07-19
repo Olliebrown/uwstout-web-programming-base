@@ -2,3 +2,8 @@
   color: #a8a8a8;
   font-size: 1.5rem;
 }
+
+.cm-editor {
+  height: 100%;
+  overflow: auto;
+}

@@ -11,6 +11,7 @@
     "client:dev": "node bundle.js dev",
     "clientServer:dev": "node bundle.js dev server",
     "server": "php -S localhost:3000 -t public/",
+    "buildCodeEditor": "esbuild database/codeEditor/editor.js --bundle --outfile=public/dbExamples/js/codeEditor.js --platform=neutral --target=es6 --minify",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -32,6 +33,13 @@
   },
   "homepage": "https://github.com/Olliebrown/uwstout-web-programming-base#readme",
   "devDependencies": {
+    "@codemirror/commands": "^6.2.4",
+    "@codemirror/lang-sql": "^6.5.2",
+    "@codemirror/theme-one-dark": "^6.1.2",
+    "@codemirror/view": "^6.15.3",
+    "cm6-theme-basic-dark": "^0.2.0",
+    "cm6-theme-basic-light": "^0.2.0",
+    "codemirror": "^6.0.1",
     "dotenv": "^16.3.1",
     "esbuild": "^0.18.00",
     "esbuild-sass-plugin": "^2.10.0",

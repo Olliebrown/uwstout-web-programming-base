@@ -18,7 +18,7 @@
         <div class="float-end pt-2">
           <i class="bi bi-moon-stars align-middle"></i>
           <div class="form-check form-check-inline form-switch mx-2 align-middle">
-            <input class="form-check-input" type="checkbox" role="switch" id="themeSwitch">
+            <input class="form-check-input" type="checkbox" role="switch" id="themeSwitch" aria-checked="false">
           </div>
           <i class="bi bi-brightness-high align-middle" style="margin-left: -10px;"></i>
         </div>
@@ -37,12 +37,11 @@
 
         <form id="queryForm">
           <div class='row'>
-            <div class='col-lg-6 text-center' style="margin-bottom: 10px;">
-              <img src='images/simpsons.png' width="550" />
+            <div class='col-xl-6 text-center' style="margin-bottom: 10px;">
+              <img src='images/simpsons.png' width="550" alt="An entity-relationship diagram for the Simpsons DB (which is described in detail in the table below)."/>
             </div>
-            <div class='col-lg-6' style="margin-bottom: 10px;">
-              <label for='sql'>Simpsons Database Query:</label>
-              <textarea class='form-control' name='sqlText' id='sqlText' rows='7' spellcheck="false" data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false" required>SELECT * FROM students;</textarea>
+            <div class='col-xl-6' style="margin-bottom: 10px;">
+              <div id="sqlText" style="height: 300px;" spellcheck="false" data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false"></div>
             </div>
           </div>
 
@@ -50,7 +49,7 @@
             <div class='col-lg-6'>
             </div>
             <div class='col-lg-6'>
-              <button id='resetQuery' type='reset' class='btn btn-warning' style='min-width: 200px;'>Reset Form</button>
+              <button id='resetQuery' type='reset' class='btn btn-warning' style='min-width: 200px;'>Reset Query</button>
               <button id='submitQuery' type='submit' class='btn btn-primary float-end' style='min-width: 200px;'>Submit Query</button>
             </div>
           </div>

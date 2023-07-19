@@ -37,6 +37,7 @@ const littleIMDBSQL = IMDB_TABLES.map(tableName =>
   fs.readFileSync(`./database/littleIMDB/${tableName}.sql`, { encoding: 'utf8' })
 )
 const myflixSQL = fs.readFileSync('./database/myflixCreate.sql', { encoding: 'utf8' })
+const peopleSQL = fs.readFileSync('./database/peopleCreate.sql', { encoding: 'utf8' })
 
 // Setup a pooled DB connection
 const createPool = () => mariaDB.createPool({
@@ -63,6 +64,19 @@ async function connectToDatabase (pool) {
   return null
 }
 
+async function checkUserExists (conn, username) {
+  try {
+    const result = await conn.query(`
+    SELECT COUNT(*) AS count FROM mysql.user WHERE user='${username}';
+    `)
+    return result[0].count > 0
+  } catch (err) {
+    console.error('Failed to check if user exists')
+    console.error(err.message)
+    return false
+  }
+}
+
 // Create a user account on the server
 async function createDatabaseUser (conn, username, password, databases) {
   if (!Array.isArray(databases)) { databases = [databases] }
@@ -81,6 +95,29 @@ async function createDatabaseUser (conn, username, password, databases) {
     return true
   } catch (err) {
     console.error('Failed to create user')
+    console.error(err.message)
+    return false
+  }
+}
+
+async function checkDatabaseExists (conn, database, tables) {
+  try {
+    const result = await conn.query(`
+    SELECT COUNT(*) AS count FROM information_schema.schemata WHERE schema_name='${database}';
+    `)
+    if (result[0].count === 0) { return false }
+
+    if (tables) {
+      const tableResult = await conn.query(`
+      SELECT COUNT(*) AS count FROM information_schema.tables WHERE
+        table_schema='${database}' AND table_name IN (${tables.map(table => `'${table}'`).join(',')});
+      `)
+      return tableResult[0].count === BigInt(tables.length)
+    }
+
+    return true
+  } catch (err) {
+    console.error('Failed to check if database exists')
     console.error(err.message)
     return false
   }
@@ -117,18 +154,24 @@ async function testDatabase () {
   const conn = await connectToDatabase(pool)
   if (conn) {
     console.log('  --> Connection succeeded')
+    console.log('\nChecking web user ...')
 
     // Create the default web user
     let userCreated = false
-    const newPW = crypto.randomUUID()
-    console.log('\nCreating new web database user')
-    console.log('============================================')
-    userCreated = await createDatabaseUser(conn, NEW_USERNAME, newPW, ['simpsons', 'myflix', 'littleIMDB'])
-    console.log('============================================')
-    console.log(`  --> Creation/update ${userCreated ? 'succeeded' : 'failed'}`)
+    let newPW = ''
+    if (!(await checkUserExists(conn, NEW_USERNAME))) {
+      newPW = crypto.randomUUID()
+      console.log('\nCreating new web database user')
+      console.log('============================================')
+      userCreated = await createDatabaseUser(conn, NEW_USERNAME, newPW, ['simpsons', 'myflix', 'littleIMDB'])
+      console.log('============================================')
+      console.log(`  --> Creation/update ${userCreated ? 'succeeded' : 'failed'}`)
+    }
+
+    console.log('\nChecking database data ...')
 
     // Sync the example databases
-    {
+    if (!(await checkDatabaseExists(conn, 'simpsons', ['students', 'teachers', 'courses', 'grades']))) {
       console.log('\nCreating/updating example database "simpsons"')
       console.log('============================================')
       const result = await runMultilineQuery(conn, simpsonsSQL)
@@ -136,17 +179,19 @@ async function testDatabase () {
       console.log(`  --> Creation/update ${result ? 'succeeded' : 'failed'}`)
     }
 
-    console.log('\nCreating/updating example database "littleIMDB"')
-    for (let i = 0; i < IMDB_TABLES.length; i++) {
-      const tableName = IMDB_TABLES[i]
-      console.log(`  --> Creating "${tableName}" table`)
-      console.log('============================================')
-      const result = await runMultilineQuery(conn, littleIMDBSQL[i])
-      console.log('============================================')
-      console.log(`  --> Creation/update ${result ? 'succeeded' : 'failed'}`)
+    if (!(await checkDatabaseExists(conn, 'littleIMDB', ['movie', 'actor', 'crew', 'genre', 'movies_actors', 'movies_crew', 'crew_genres']))) {
+      console.log('\nCreating/updating example database "littleIMDB"')
+      for (let i = 0; i < IMDB_TABLES.length; i++) {
+        const tableName = IMDB_TABLES[i]
+        console.log(`  --> Creating "${tableName}" table`)
+        console.log('============================================')
+        const result = await runMultilineQuery(conn, littleIMDBSQL[i])
+        console.log('============================================')
+        console.log(`  --> Creation/update ${result ? 'succeeded' : 'failed'}`)
+      }
     }
 
-    {
+    if (!(await checkDatabaseExists(conn, 'myflix', ['movies']))) {
       console.log('\nCreating/updating example database "myflix"')
       console.log('============================================')
       const result = await runMultilineQuery(conn, myflixSQL)
@@ -154,10 +199,20 @@ async function testDatabase () {
       console.log(`  --> Creation/update ${result ? 'succeeded' : 'failed'}`)
     }
 
+    if (!(await checkDatabaseExists(conn, 'people', ['customer']))) {
+      console.log('\nCreating/updating example database "people"')
+      console.log('============================================')
+      const result = await runMultilineQuery(conn, peopleSQL)
+      console.log('============================================')
+      console.log(`  --> Creation/update ${result ? 'succeeded' : 'failed'}`)
+    }
+
+    console.log('\n  --> Database data check complete')
+
     // Close the connection
     conn.release()
 
-    // Output connection data
+    // Output user account data
     if (userCreated) {
       fs.writeFileSync('./dbUser.txt', `username=${NEW_USERNAME}\npassword=${newPW}`)
       console.log('\n**************************************************')
@@ -165,6 +220,11 @@ async function testDatabase () {
       console.log('    Username:', NEW_USERNAME)
       console.log('    Password:', newPW)
       console.log('(these are also saved in dbUser.txt)')
+      console.log('**************************************************')
+    } else {
+      console.log('\n**************************************************')
+      console.log('webUser account was not changed. Your login details')
+      console.log('are the same as before (see dbUser.txt).')
       console.log('**************************************************')
     }
   } else {

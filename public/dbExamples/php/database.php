@@ -8,6 +8,9 @@ abstract class DBDeets {
   const DB_PW = 'REPLACE_WITH_YOUR_PASSWORD';
 }
 
+// Disable active reporting of errors (we handle them manually)
+mysqli_report(MYSQLI_REPORT_OFF);
+
 // Connect to a MySQL style database using mysqli
 function connectToDatabase($databaseName) {
   $db = new mysqli('localhost', DBDeets::DB_USER, DBDeets::DB_PW, $databaseName);

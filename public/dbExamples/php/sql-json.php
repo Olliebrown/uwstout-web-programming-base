@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 }
 
 // Check if db password is set
-if (DBDeets::DB_PW == 'REPLACE_ME') {
+if (str_starts_with(DBDeets::DB_PW, 'REPLACE_WITH')) {
   die_json(500, "Database password is not set. Make sure you initialized the database by running 'npm run createDB' then edit 'examples/php/database.php' and set the DB_PW on line 8. Your specific password can be found in dbUser.txt.");
 }
 
@@ -42,10 +42,20 @@ if ($data['database'] != DBDeets::DB_NAME_LITTLEIMDB && $data['database'] != DBD
 
 // Establish the connection to the database
 $db = connectToDatabase($data['database']);
+$db->set_charset("utf8");
 
 // Run query and retrieve data
 $queryData = resultQuery($db, $data['query'], false);
-echo json_encode($queryData);
+if (!$queryData) {
+  echo "[]";
+} else {
+  $JSONString = json_encode($queryData);
+  if (json_last_error() != JSON_ERROR_NONE) {
+    die_json(500, "There was an error encoding the results as JSON", array("jsonError"=>json_last_error_msg()));
+  }
+
+  echo $JSONString;
+}
 
 // Cleanup
 $db->close();

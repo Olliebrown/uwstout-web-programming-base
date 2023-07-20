@@ -38,9 +38,11 @@ To run the examples and complete Database related homework, you must set up data
 1. After installing MariaDB (or similar) be sure to open `example.env` and follow the instructions inside
    - You must update DB_PASSWORD to match your root user account password (set during install of the database)
 2. Run `npm run createDB` to create the missing databases and a special user for use with PHP
-3. Look at `dbUser.txt` for your username and password (which is different for everyone)
-4. Copy the password into `public/dbExamples/php/database.php` (look around line 8)
-5. Startup the PHP-compatible server with `npm run server` and visit http://localhost:3000/dbExamples/simpsonsDB.html
+   - For Windows, it will also attempt to find your PHP install and enable the mysqli extension (if php is installed under `%LOCALAPPDATA%/php*`)
+   - Watch the output. If it fails to enable mysqli it will tell you and you will need to do so manually.
+4. Look at `dbUser.txt` for your username and password (which is different for everyone)
+5. Copy the password into `public/dbExamples/php/database.php` (look around line 8)
+6. Startup the PHP-compatible server with `npm run server` and visit http://localhost:3000/dbExamples/simpsonsDB.html
 
 Development and Usage
 ---------------------

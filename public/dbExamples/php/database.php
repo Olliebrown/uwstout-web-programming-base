@@ -68,7 +68,7 @@ function makeDBErrorInfo($db, $stmt = null) {
     if ($db->connect_errno) {
       $errorInfo['connectErrno'] = $db->connect_errno;
       $errorInfo['connectError'] = $db->connect_error;
-    } else if ($db->ping() && $db->errno) {
+    } else if ($db->errno) {
       $errorInfo['dbErrno'] = $db->errno;
       $errorInfo['dbError'] = $db->error;
     }

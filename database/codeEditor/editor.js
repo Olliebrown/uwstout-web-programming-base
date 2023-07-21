@@ -1,22 +1,23 @@
-import { basicSetup } from 'codemirror'
 import { EditorView, keymap } from '@codemirror/view'
 import { indentWithTab } from '@codemirror/commands'
 import { Compartment } from '@codemirror/state'
 import { sql } from '@codemirror/lang-sql'
 
-import { basicLight } from 'cm6-theme-basic-light'
-import { basicDark } from 'cm6-theme-basic-dark'
+import { basicLight } from './lightTheme.js'
+import { basicDark } from './darkTheme.js'
+
+import { createCodeMirrorSetup } from './myConfig.js'
 
 let editor = {}
 const editorTheme = new Compartment()
 
-export function addCodeEditor (editorID, initialCode = '', darkTheme = true) {
+export function addCodeEditor (editorID, initialCode = '', languageSettings = {}, darkTheme = true, editorSettings = null) {
   editor = new EditorView({
     extensions: [
-      basicSetup,
+      createCodeMirrorSetup(editorSettings),
       keymap.of([indentWithTab]),
       editorTheme.of(darkTheme ? basicDark : basicLight),
-      sql()
+      sql(languageSettings)
     ],
     parent: document.querySelector(`#${editorID}`),
     doc: initialCode
